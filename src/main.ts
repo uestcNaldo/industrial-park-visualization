@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
+console.log(import.meta.env)
 /* App.vue为根组件
  * app为应用实例
  */

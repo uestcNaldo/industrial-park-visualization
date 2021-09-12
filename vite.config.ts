@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,13 +10,16 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      css: './src/assets/css'
+      css: path.resolve(__dirname, 'src/assets/css'),
+      image: path.resolve(__dirname, 'src/assets/image'),
+      components: path.resolve(__dirname, 'src/components'),
+      '@': path.resolve(__dirname, 'src')
     }
   },
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@import "css/variables.scss";'
+        additionalData: '@import "css/variables.scss";@import "css/mixins.scss";'
       }
     }
   }

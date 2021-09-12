@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "baseUrl": "/",
     "module": "esnext",
     "moduleResolution": "node",
     "strict": true,
@@ -12,7 +11,10 @@
     "lib": ["esnext", "dom"],
     "types": ["vite/client"],
     "paths": {
-      "css": ["src/assets/css"]
+      "css": ["./src/assets/css"],
+      "image": ["./src/assets/image"],
+      "components": ["./src/components"],
+      "@": ["./src"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]

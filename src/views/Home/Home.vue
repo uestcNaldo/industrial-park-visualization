@@ -5,6 +5,9 @@
       <div class="header-date">{{dateTime}}</div>
       <h1 class="header-title">河边镇工业园区精细化管理大屏</h1>
     </header>
+    <BaseBox class="overview-box" title="实时能耗总览"></BaseBox>
+    <BaseBox class="trend-box" title="今日用能曲线"></BaseBox>
+    <BaseBox class="ranking-box" title="厂房用能排行"></BaseBox>
   </div>
 </template>
 <script lang="ts">
@@ -12,6 +15,7 @@ import { defineComponent, reactive, ref, computed, watch, onMounted } from 'vue'
 import * as THREE from 'three'
 import { Scene, PerspectiveCamera, WebGLRenderer } from 'three'
 import dayjs from 'dayjs'
+import BaseBox from 'components/BaseBox.vue'
 let scene: Scene
 let camera: PerspectiveCamera
 let renderer: WebGLRenderer
@@ -19,10 +23,11 @@ let timer: number
 export default defineComponent({
   name: 'Home',
   setup (props, {attrs, slots, emit}) {
+    console.log(attrs, slots, emit)
     onMounted(() => {
-      console.log(attrs, slots, emit)
     })
   },
+  components: { BaseBox },
   data () {
     return {
       dateTime: dayjs().format('YYYY年M月D日 HH:mm:ss')
@@ -32,7 +37,7 @@ export default defineComponent({
     timer = setTimeout((function timeUpdate (this: any) {
       this.dateTime = dayjs().format('YYYY年M月D日 HH:mm:ss')
       timer = setTimeout(timeUpdate.bind(this), 1000)
-    }).bind(this))
+    }).bind(this), 1000)
   },
   mounted () {
     console.log('mounted')
@@ -85,4 +90,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" src="./style.scss" scoped></style>
+<style lang="scss" src="./home.scss" scoped></style>

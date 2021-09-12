@@ -17,6 +17,9 @@
     height: 6rem;
     top: 0;
     padding: 1rem 2rem;
+    background: center center url('/src/assets/image/pic_title.png'),
+                right center url('/src/assets/image/pic_raw_right.png');
+    background-repeat: no-repeat;
     .header-date {
       float: left;
       position: absolute;
@@ -31,5 +34,17 @@
       transform: translate(-50%, -50%);
       font-size: 1.75rem;
     }
+  }
+  .overview-box {
+    top: 8rem;
+    left: 2rem;
+  }
+  .trend-box {
+    top: 25rem;
+    left: 2rem;
+  }
+  .ranking-box {
+    top: 42rem;
+    left: 2rem;
   }
 }
