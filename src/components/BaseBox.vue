@@ -12,8 +12,7 @@ interface Props {
   height?: string
 }
 const props = withDefaults(defineProps<Props>(), {
-  title: '标题',
-  height: '16rem'
+  title: '标题'
 })
 console.log(props)
 </script>
@@ -40,13 +39,14 @@ console.log(props)
 <style lang="scss" scoped>
 $--padding-width: 1rem;
 .base-box {
-  width: 28rem;
-  height: 16rem;
+  width: 100%;
+  min-height: 12rem;
   display: flex;
   flex-direction: column;
-  background: #1d2a3e88;
   /* 使用linear-gradient实现切角，使用硬性的颜色分割 */
-  background: linear-gradient(225deg, transparent 1rem, #1d2a3e88 0);
+  background: url('@/assets/svg/base_box_corner.svg') no-repeat right top,
+              linear-gradient(225deg, transparent 2rem, #1d2a3e88 0);
+  background-origin: border-box;
   .header {
     padding: $--padding-width;
     display: flow-root;

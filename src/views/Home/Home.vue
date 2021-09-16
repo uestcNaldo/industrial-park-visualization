@@ -5,9 +5,7 @@
       <div class="header-date">{{dateTime}}</div>
       <h1 class="header-title">河边镇工业园区精细化管理大屏</h1>
     </header>
-    <BaseBox class="overview-box" title="实时能耗总览"></BaseBox>
-    <BaseBox class="trend-box" title="今日用能曲线"></BaseBox>
-    <BaseBox class="ranking-box" title="厂房用能排行"></BaseBox>
+    <router-view></router-view>
   </div>
 </template>
 <script lang="ts">
@@ -15,7 +13,6 @@ import { defineComponent, reactive, ref, computed, watch, onMounted } from 'vue'
 import * as THREE from 'three'
 import { Scene, PerspectiveCamera, WebGLRenderer } from 'three'
 import dayjs from 'dayjs'
-import BaseBox from 'components/BaseBox.vue'
 let scene: Scene
 let camera: PerspectiveCamera
 let renderer: WebGLRenderer
@@ -27,7 +24,7 @@ export default defineComponent({
     onMounted(() => {
     })
   },
-  components: { BaseBox },
+  components: {},
   data () {
     return {
       dateTime: dayjs().format('YYYY年M月D日 HH:mm:ss')
@@ -90,4 +87,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" src="./home.scss" scoped></style>
+<style lang="scss" src="./home.scss"></style>

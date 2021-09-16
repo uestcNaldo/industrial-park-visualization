@@ -5,3 +5,9 @@
     clear: both;
   }
 }
+
+@mixin setEqualMargin ($interval, $type: 'right') {
+  & > *:not(:last-child) {
+    margin-#{$type}: $interval;
+  }
+}

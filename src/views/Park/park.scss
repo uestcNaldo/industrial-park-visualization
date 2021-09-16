@@ -1,0 +1,20 @@
+
+.box-wrapper {
+  width: 20%;
+  min-width: 25rem;
+  max-width: 40rem;
+  height: 80%;
+  top: 8rem;
+  display: flex;
+  flex-direction: column;
+  @include setEqualMargin(1rem, bottom);
+  > * {
+    flex: 1;
+  }
+  &.left {
+    left: 2rem;
+  }
+  &.right {
+    right: 2rem;
+  }
+}
