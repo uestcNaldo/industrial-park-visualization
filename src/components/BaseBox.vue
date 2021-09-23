@@ -14,7 +14,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   title: '标题'
 })
-console.log(props)
 </script>
 
 <template>
