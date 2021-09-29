@@ -45,7 +45,6 @@ export default defineComponent({
     }).bind(this), 1000)
   },
   mounted () {
-    console.log('mounted')
     this.initRenderer()
     this.animate()
   },
@@ -56,60 +55,72 @@ export default defineComponent({
     initRenderer () {
       const canvas: HTMLCanvasElement = this.$refs.canvas as HTMLCanvasElement
       renderer = new WebGLRenderer({ canvas, antialias: true, logarithmicDepthBuffer: true })
+      /* renderer阴影开启 */
       renderer.shadowMap.enabled = true
       renderer.shadowMap.type = THREE.PCFSoftShadowMap
+      /* renderer输出编码 */
+      renderer.outputEncoding = THREE.sRGBEncoding
 
       /* 场景 */
       scene = new Scene()
       scene.background = new THREE.Color(0x131D26)
 
-      /* 相机 */
-      mainCamera = new PerspectiveCamera(
-        50, 
-        window.innerWidth / window.innerHeight, 
-        0.1, 
-        10000
-      )
+      /* 主相机 */
+      const fov = 50
+      const aspect = window.innerWidth / window.innerHeight
+      const near = 0.1
+      const far = 10000
+      mainCamera = new PerspectiveCamera(fov, aspect, near, far)
       mainCamera.position.set(100, 50, 150)
 
       /* 控制器 */
       controls = new OrbitControls(mainCamera, canvas)
+      controls.enableDamping = true
       controls.update()
 
-      /* 光线 */
-      const light = new THREE.DirectionalLight(0xFFFFFF, 1)
-      light.position.set(100, 500, 100)
-      light.castShadow = true
-      light.shadow.camera.near = 0.1
-      light.shadow.camera.far = 20000
-      light.shadow.camera.left = -1000
-      light.shadow.camera.right = 1000
-      light.shadow.camera.bottom = -1000
-      light.shadow.camera.top = 1000
-      light.shadow.camera.updateProjectionMatrix()
-      scene.add(light)
-      const lightHelper = new THREE.DirectionalLightHelper(light, 20)
-      scene.add(lightHelper)
+      /* 平行光线 */
+      {
+        const light = new THREE.DirectionalLight(0xffffff, 1)
+        light.position.set(100, 200, 100)
+        light.castShadow = true
+        const maxTextureSize = renderer.capabilities.maxTextureSize
+        light.shadow.mapSize = new THREE.Vector2(maxTextureSize, maxTextureSize)
+        const shadowCamera = light.shadow.camera
+        shadowCamera.near = 0.1
+        shadowCamera.far = 20000
+        shadowCamera.left = -1000
+        shadowCamera.right = 1000
+        shadowCamera.bottom = -1000
+        shadowCamera.top = 1000
+        shadowCamera.updateProjectionMatrix()
+        scene.add(light)
+        scene.add(light.target)
+        const lightHelper = new THREE.DirectionalLightHelper(light, 20)
+        scene.add(lightHelper)
+      }
+      /* 环境光 */
+      {
+        const light = new THREE.AmbientLight(0xffffff, 1)
+        scene.add(light)
+      }
+      /* 半球光 */
+      {
+        const skyColor = 0x131D26
+        const groundColor = 0x1B232A
+        const light = new THREE.HemisphereLight(skyColor, groundColor, 1)
+        scene.add(light)
+      }
 
-      /* 轴线辅助 */
-      const axesHelper = new THREE.AxesHelper(100)
-      // scene.add(axesHelper)
       /* 加载外部模型 */
       glTFLoader.load(
         'c_园区大屏.gltf',
         function onLoad (gltf) {
           console.log(gltf)
           const model: Group = gltf.scene
-          // model.scale.setScalar(0.05)
-          model.castShadow = true
-          model.receiveShadow = true
-          ;(function traverse (item: Object3D) {
-            item.castShadow = true
-            item.receiveShadow = true
-            item.children.forEach(o => {
-              traverse(o)
-            })
-          })(model)
+          model.traverse((obj) => {
+            obj.castShadow = true
+            obj.receiveShadow = true
+          })
           scene.add(model)
         },
         undefined,
@@ -120,13 +131,13 @@ export default defineComponent({
       /* 地面 */
       {
         const geometry = new THREE.PlaneGeometry(10000, 10000)
-        const material = new THREE.MeshPhysicalMaterial({
+        const material = new THREE.MeshStandardMaterial({
           color: 0x1B232A,
           side: THREE.DoubleSide
         })
         const plane = new THREE.Mesh(geometry, material)
         plane.rotateX(-Math.PI / 2)
-        plane.position.setY(-0.5)
+        plane.position.setY(-0.1)
         plane.receiveShadow = true
         plane.name = '地面'
         scene.add(plane)
@@ -142,6 +153,7 @@ export default defineComponent({
         const renderHeight = canvas.height
         const needResize = outerWidth !== renderWidth || outerHeight !== renderHeight
         if (needResize) {
+          /* 设置renderer的渲染分辨率 */
           renderer.setSize(outerWidth, outerHeight, false)
         }
         return needResize
@@ -150,7 +162,8 @@ export default defineComponent({
       function update (nowTime: number): void {
         const deltaTime = clock.getDelta()
         if (resizeRendererToDisplaySize(renderer)) {
-          mainCamera.aspect = renderer.domElement.clientWidth / renderer.domElement.clientHeight
+          const canvas = renderer.domElement
+          mainCamera.aspect = canvas.clientWidth / canvas.clientHeight
           mainCamera.updateProjectionMatrix()
         }
         controls.update()
