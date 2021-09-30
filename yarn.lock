@@ -457,7 +457,7 @@ esbuild-windows-32@0.13.3:
 
 esbuild-windows-64@0.13.3:
   version "0.13.3"
-  resolved "https://registry.npmmirror.com/esbuild-windows-64/download/esbuild-windows-64-0.13.3.tgz#ae710c0629ec8c39c5ef1f69e86ed5592bb4128f"
+  resolved "https://registry.npmmirror.com/esbuild-windows-64/download/esbuild-windows-64-0.13.3.tgz?cache=0&sync_timestamp=1632992729795&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fesbuild-windows-64%2Fdownload%2Fesbuild-windows-64-0.13.3.tgz#ae710c0629ec8c39c5ef1f69e86ed5592bb4128f"
   integrity sha1-rnEMBinsjDnF7x9p6G7VWSu0Eo8=
 
 esbuild-windows-arm64@0.13.3:
@@ -867,9 +867,9 @@ upath@^2.0.1:
   integrity sha1-UMc96mjW9rmQ9R0nnOYIFmXWGos=
 
 vite@^2.5.1:
-  version "2.6.0"
-  resolved "https://registry.npmmirror.com/vite/download/vite-2.6.0.tgz?cache=0&sync_timestamp=1632922776000&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvite%2Fdownload%2Fvite-2.6.0.tgz#91392de5188257e26fc4c0dd9fb91d7fcad2a72d"
-  integrity sha1-kTkt5RiCV+JvxMDdn7kdf8rSpy0=
+  version "2.6.2"
+  resolved "https://registry.npmmirror.com/vite/download/vite-2.6.2.tgz#5bbb4afe1f69ed9d6482e51a0f761f8cfc230e22"
+  integrity sha1-W7tK/h9p7Z1kguUaD3YfjPwjDiI=
   dependencies:
     esbuild "^0.13.2"
     postcss "^8.3.8"
