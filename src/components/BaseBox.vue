@@ -43,7 +43,10 @@ $--padding-width: 1rem;
   display: flex;
   flex-direction: column;
   /* 使用linear-gradient实现切角，使用硬性的颜色分割 */
-  background: url('@/assets/svg/base_box_corner.svg') no-repeat right top,
+  background: url('assets/svg/base_box_corner-right-top.svg') no-repeat right top,
+              url('assets/svg/base_box_corner-left-top.svg') no-repeat left top,
+              url('assets/svg/base_box_corner-left-bottom.svg') no-repeat left bottom,
+              url('assets/svg/base_box_corner-right-bottom.svg') no-repeat right bottom,
               linear-gradient(225deg, transparent 2rem, #1d2a3e88 0);
   background-origin: border-box;
   .header {

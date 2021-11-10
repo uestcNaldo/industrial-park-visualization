@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="100">
-  <!-- <polyline points="0 0, 100 0, 120 20, 240 20, 245 25, 245 50" stroke="#31FFFD" fill="transparent"/> -->
-  <path d="M 0 2, h 100, l 16 16, h 168, l 10 10, v 50" stroke="#31FFFD" fill="transparent"/>
-  <rect width="50" height="12" x="104" y="2" fill="#206771" transform="skewX(45)"/>
-  <rect width="50" height="12" x="158" y="2" fill="#26A8B5" transform="skewX(45)"/>
-  <rect width="50" height="12" x="212" y="2" fill="#31FFFD" transform="skewX(45)"/>
-  <circle cx="294" cy="80" r="5" fill="#31FFFD"/>
-</svg>
