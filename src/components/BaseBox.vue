@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
       <div class="header-left">
         <slot name="headerLeft">
           <img src="/src/assets/image/title_frame.png">
-          <span class="title">{{title}}</span>
+          <h4 class="title">{{title}}</h4>
         </slot>
       </div>
       <div class="header-right">
@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
 </template>
 
 <style lang="scss" scoped>
-$--padding-width: 1rem;
+$--padding-width: 0.875rem;
 .base-box {
   width: 100%;
   min-height: 12rem;
@@ -57,6 +57,7 @@ $--padding-width: 1rem;
       float: left;
       display: flex;
       align-items: center;
+      @include setEqualMargin(0.5rem, 'right');
     }
     &-right {
       float: right;

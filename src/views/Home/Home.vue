@@ -23,6 +23,9 @@ let controls: OrbitControls
 const clock = new THREE.Clock()
 const glTFLoader = new GLTFLoader().setPath('/src/assets/model/park/')
 
+const raycaster = new THREE.Raycaster()
+const mouse = new THREE.Vector2()
+
 let timer: number
 const dateFormat = 'YYYY年M月D日 HH:mm:ss'
 
@@ -43,6 +46,10 @@ export default defineComponent({
       this.dateTime = dayjs().format(dateFormat)
       timer = setTimeout(timeUpdate.bind(this), 1000)
     }).bind(this), 1000)
+    window.addEventListener('mousemove', (event) => {
+      mouse.x = (event.x / window.innerWidth) * 2 - 1
+      mouse.y = (event.y / window.innerHeight) * -2 + 1
+    })
   },
   mounted () {
     this.initRenderer()
@@ -54,15 +61,21 @@ export default defineComponent({
   methods: {
     initRenderer () {
       const canvas: HTMLCanvasElement = this.$refs.canvas as HTMLCanvasElement
-      renderer = new WebGLRenderer({ canvas, antialias: true, logarithmicDepthBuffer: true })
+      renderer = new WebGLRenderer({
+        canvas,
+        antialias: true,
+        logarithmicDepthBuffer: true,
+        powerPreference: 'high-performance'
+      })
       /* renderer阴影开启 */
       renderer.shadowMap.enabled = true
       renderer.shadowMap.type = THREE.PCFSoftShadowMap
       /* renderer输出编码 */
       renderer.outputEncoding = THREE.sRGBEncoding
-
+      // renderer.physicallyCorrectLights = true
       /* 场景 */
       scene = new Scene()
+      scene.name = '总场景'
       scene.background = new THREE.Color(0x131D26)
 
       /* 主相机 */
@@ -81,6 +94,7 @@ export default defineComponent({
       /* 平行光线 */
       {
         const light = new THREE.DirectionalLight(0xffffff, 1)
+        light.name = '太阳'
         light.position.set(100, 200, 100)
         light.castShadow = true
         const maxTextureSize = renderer.capabilities.maxTextureSize
@@ -94,13 +108,13 @@ export default defineComponent({
         shadowCamera.top = 1000
         shadowCamera.updateProjectionMatrix()
         scene.add(light)
-        scene.add(light.target)
         const lightHelper = new THREE.DirectionalLightHelper(light, 20)
-        scene.add(lightHelper)
+        // scene.add(lightHelper)
       }
       /* 环境光 */
       {
         const light = new THREE.AmbientLight(0xffffff, 1)
+        light.name = '环境光'
         scene.add(light)
       }
       /* 半球光 */
@@ -108,6 +122,7 @@ export default defineComponent({
         const skyColor = 0x131D26
         const groundColor = 0x1B232A
         const light = new THREE.HemisphereLight(skyColor, groundColor, 1)
+        light.name = '天空到地面光'
         scene.add(light)
       }
 
@@ -117,6 +132,7 @@ export default defineComponent({
         function onLoad (gltf) {
           console.log(gltf)
           const model: Group = gltf.scene
+          model.name = '园区场景'
           model.traverse((obj) => {
             obj.castShadow = true
             obj.receiveShadow = true
@@ -166,7 +182,13 @@ export default defineComponent({
           mainCamera.aspect = canvas.clientWidth / canvas.clientHeight
           mainCamera.updateProjectionMatrix()
         }
+        // 控制器更新
         controls.update()
+        // 光线投射器
+        raycaster.setFromCamera(mouse, mainCamera)
+        const intersects = raycaster.intersectObjects(scene.children)
+        const pickedObj = intersects[0]?.object
+        // 渲染器渲染
         renderer.render(scene, mainCamera)
         requestAnimationFrame(update)
       }
